@@ -34,7 +34,11 @@ origMustacheHeight, origMustacheWidth = imgMustache.shape[:2]
 # collect video input from first webcam on system
 video_capture = cv2.VideoCapture(0)
 
-while True:
+i = 0
+
+while i < 30:
+    i = i + 1
+    print(i)
     # Capture video feed
     ret, frame = video_capture.read()
 
