@@ -1,5 +1,6 @@
 import cv2  # OpenCV Library
 import sys
+import time
 
 # -----------------------------------------------------------------------------
 #       Load and configure Haar Cascade Classifiers
@@ -34,11 +35,10 @@ origMustacheHeight, origMustacheWidth = imgMustache.shape[:2]
 # collect video input from first webcam on system
 video_capture = cv2.VideoCapture(0)
 
-i = 0
+while time.clock() < 15:
+    print time.clock()
 
-while i < 30:
-    i = i + 1
-    print(i)
+    # print(i)
     # Capture video feed
     ret, frame = video_capture.read()
 
