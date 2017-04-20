@@ -118,7 +118,10 @@ while i < 30:
             break
 
     # Display the resulting frame
+    cv2.imwrite('opencv.jpg', frame)
     cv2.imshow('Video', frame)
+    # return_value, image = video_capture.read()
+    # cv2.imwrite("opencv.png", image)
 
     # press any key to exit
     # NOTE;  x86 systems may need to remove: &amp;amp;amp;amp;amp;amp;amp;quot;&amp;amp;amp;amp;amp;amp;amp;amp; 0xFF == ord('q')&amp;amp;amp;amp;amp;amp;amp;quot;
