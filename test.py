@@ -1,10 +1,13 @@
 import cv2  # OpenCV Library
 import sys
 import time
+from pygame import mixer
 
 # -----------------------------------------------------------------------------
 #       Load and configure Haar Cascade Classifiers
 # -----------------------------------------------------------------------------
+mixer.init()
+mixer.music.load('sound.mp3')
 
 # build our cv2 Cascade Classifiers
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
@@ -35,10 +38,15 @@ origMustacheHeight, origMustacheWidth = imgMustache.shape[:2]
 # collect video input from first webcam on system
 video_capture = cv2.VideoCapture(0)
 
-while time.clock() < 15:
-    print time.clock()
+soundStarted = False;
 
-    # print(i)
+while time.clock() < 17:
+    print time.clock()
+    
+    if soundStarted == False:
+    	soundStarted = True
+	mixer.music.play()
+
     # Capture video feed
     ret, frame = video_capture.read()
 
