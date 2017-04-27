@@ -1,4 +1,7 @@
 import cv2  # OpenCV Library
+import sys
+import time
+from pygame import mixer
  
 #-----------------------------------------------------------------------------
 #       Load and configure Haar Cascade Classifiers
