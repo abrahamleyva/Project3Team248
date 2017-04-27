@@ -7,17 +7,9 @@ from pygame import mixer
 #       Load and configure Haar Cascade Classifiers
 #-----------------------------------------------------------------------------
  
-# location of OpenCV Haar Cascade Classifiers:
-baseCascadePath = &amp;amp;amp;amp;amp;amp;amp;quot;/usr/local/share/OpenCV/haarcascades/&amp;amp;amp;amp;amp;amp;amp;quot;
- 
-# xml files describing our haar cascade classifiers
-faceCascadeFilePath = baseCascadePath + &amp;amp;amp;amp;amp;amp;amp;quot;haarcascade_frontalface_default.xml&amp;amp;amp;amp;amp;amp;amp;quot;
-noseCascadeFilePath = baseCascadePath + &amp;amp;amp;amp;amp;amp;amp;quot;haarcascade_mcs_nose.xml&amp;amp;amp;amp;amp;amp;amp;quot;
- 
 # build our cv2 Cascade Classifiers
-faceCascade = cv2.CascadeClassifier(faceCascadeFilePath)
-noseCascade = cv2.CascadeClassifier(noseCascadeFilePath)
-
+faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+noseCascade = cv2.CascadeClassifier("haarcascade_mcs_nose.xml")
 eye_cascade = cv2.CascadeClassifier("haarcascade_eye.xml")
  
 #-----------------------------------------------------------------------------
@@ -35,7 +27,7 @@ orig_mask_inv = cv2.bitwise_not(orig_mask)
  
 # Convert glasses image to BGR
 # and save the original image size (used later when re-sizing the image)
-imgGlasses = imgGlasses[:,:,0:3]
+img = imgGlasses[:,:,0:3]
 origGlassesHeight, origGlassesWidth = imgGlasses.shape[:2]
  
 #-----------------------------------------------------------------------------
@@ -70,7 +62,7 @@ while True:
         roi_color = frame[y:y+h, x:x+w]
  
         # Detect eyes within the region bounded by each face (the ROI)
-        eyes = eyeCascade.detectMultiScale(roi_gray)
+        eyes = eye_cascade.detectMultiScale(roi_gray)
  
         for(ex, ey, ew, eh) in eyes:
         #cv2.rectangle(roi_color,(ex,ey), (ex+ew, ey+eh), (0,255,0),2)
@@ -80,7 +72,7 @@ while True:
         
         # The glasses should be three times the width of the eyes
             glassesWidth =  2 * ew
-            glassesHight = glassesWidth * origGlassesHeight / origGlassesWidth
+            glassesHeight = glassesWidth * origGlassesHeight / origGlassesWidth
  
             # Center the glasses on top of eyes
             e1 = ex - (glassesWidth/4)
@@ -89,18 +81,18 @@ while True:
             e2 = ey + eh + (glassesHeight/2)
  
             # Check for clipping
-            if x1 < 0:
-                x1 = 0
-            if y1 < 0:
-                y1 = 0
-            if x2 > w:
-                x2 = w
-            if y2 > h:
-                y2 = h
+            if e1 < 0:
+                e1 = 0
+            if e1 < 0:
+                e1 = 0
+            if e2 > w:
+                e2 = w
+            if e2 > h:
+                e2 = h
  
             # Re-calculate the width and height of the glasses image
-            glassesWidth = x2 - x1
-            glassesHeight = y2 - y1
+            glassesWidth = e2 - e1
+            glassesHeight = e2 - e1
  
             # Re-size the original image and the masks to the glasses sizes
             # calcualted above
@@ -109,7 +101,7 @@ while True:
             mask_inv = cv2.resize(orig_mask_inv, (glassesWidth,glassesHeight), interpolation = cv2.INTER_AREA)
  
             # take ROI for glasses from background equal to size of glasses image
-            roi = roi_color[y1:y2, x1:x2]
+            roi = roi_color[e1:e2, e1:e2]
  
             # roi_bg contains the original image only where the glasses is not
             # in the region that is the size of the glasses.
@@ -122,7 +114,7 @@ while True:
             dst = cv2.add(roi_bg,roi_fg)
  
             # place the joined image, saved to dst back over the original image
-            roi_color[y1:y2, x1:x2] = dst
+            roi_color[e1:e2, e1:e2] = dst
  
             break
  
@@ -131,7 +123,7 @@ while True:
  
     # press any key to exit
     # NOTE;  x86 systems may need to remove: &amp;amp;amp;amp;amp;amp;amp;quot;&amp;amp;amp;amp;amp;amp;amp;amp; 0xFF == ord('q')&amp;amp;amp;amp;amp;amp;amp;quot;
-    if cv2.waitKey(1) &amp;amp;amp;amp;amp;amp;amp;amp; 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
  
 # When everything is done, release the capture
