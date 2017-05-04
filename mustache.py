@@ -11,14 +11,14 @@ mixer.music.load('sounds/sound.mp3')
 
 # build our cv2 Cascade Classifiers
 faceCascade = cv2.CascadeClassifier("hars/face.xml")
-eyesCascade = cv2.CascadeClassifier("hars/haarcascade_mcs_eyepair_small.xml")
+noseCascade = cv2.CascadeClassifier("hars/nose.xml")
 
 # -----------------------------------------------------------------------------
 #       Load and configure mustache (.png with alpha transparency)
 # -----------------------------------------------------------------------------
 
 # Load our overlay image: mustache.png
-imgMustache = cv2.imread('filters/glasses.png', -1)
+imgMustache = cv2.imread('filters/mustache.png', -1)
 
 # Create the mask for the mustache
 orig_mask = imgMustache[:, :, 3]
@@ -71,21 +71,22 @@ while time.clock() < 17:
         roi_color = frame[y:y + h, x:x + w]
 
         # Detect a nose within the region bounded by each face (the ROI)
-        eyes = eyesCascade.detectMultiScale(roi_gray)
+        nose = noseCascade.detectMultiScale(roi_gray)
 
-        for (ex, ey, ew, eh) in eyes:
+        for (nx, ny, nw, nh) in nose:
             # Un-comment the next line for debug (draw box around the nose)
             # cv2.rectangle(roi_color,(nx,ny),(nx+nw,ny+nh),(255,0,0),2)
 
             # The mustache should be three times the width of the nose
-            mustacheWidth = 3 * ew
+            mustacheWidth = 3 * nw
             mustacheHeight = mustacheWidth * origMustacheHeight / origMustacheWidth
 
             # Center the mustache on the bottom of the nose
-            x1 = ex - (mustacheWidth / 2)
-            x2 = ex + ew + (mustacheWidth / 2)
-            y1 = ey + eh - (mustacheHeight / 4)
-            y2 = ey + eh + (mustacheHeight / 4)
+            x1 = nx - (mustacheWidth / 4)
+            x2 = nx + nw + (mustacheWidth / 4)
+            y1 = ny + nh - (mustacheHeight / 2)
+            y2 = ny + nh + (mustacheHeight / 2)
+
             # Check for clipping
             if x1 < 0:
                 x1 = 0
