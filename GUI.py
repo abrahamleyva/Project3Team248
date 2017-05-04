@@ -6,7 +6,7 @@ import tkMessageBox
 top=Tk()
 
 def helloCallBack():
-    os.system('python test.py')
+    os.system('python mustache.py')
 
 B=Button(top,text="Mustache Filter",command= helloCallBack)
 B.pack()
@@ -16,7 +16,7 @@ l = Label(top, text = "CHOOSE A FILTER")
 l.pack()
 
 def helloCallBack():
-    os.system('python test.py')
+    os.system('python glasses.py')
 
 C=Button(top,text="Glasses Filter",command= helloCallBack)
 C.pack()
@@ -25,7 +25,7 @@ C.place(relx=0.5, rely=0.5, anchor="n")
 
 
 def helloCallBack():
-    os.system('python test.py')
+    os.system('python redNose.py')
 
 D=Button(top,text="Red Nose Filter",command= helloCallBack)
 D.pack()
