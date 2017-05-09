@@ -1,39 +1,29 @@
-import cv2  # OpenCV Library
+import cv2
 import sys
 import time
 from pygame import mixer
 
-# -----------------------------------------------------------------------------
-#       Load and configure Haar Cascade Classifiers
-# -----------------------------------------------------------------------------
+# Loading and playing the timer sound
 mixer.init()
 mixer.music.load('sounds/sound.mp3')
 
-# build our cv2 Cascade Classifiers
+# building necessary cv2 Cascade files
 faceCascade = cv2.CascadeClassifier("hars/face.xml")
 noseCascade = cv2.CascadeClassifier("hars/nose.xml")
 
-# -----------------------------------------------------------------------------
-#       Load and configure mustache (.png with alpha transparency)
-# -----------------------------------------------------------------------------
-
-# Load our overlay image: mustache.png
+# Loads our image with only the non-transparent sections visible
 imgMustache = cv2.imread('filters/mustache.png', -1)
 
-# Create the mask for the mustache
+# Create the mask for the filter based on the visible parts of the image
 orig_mask = imgMustache[:, :, 3]
 
-# Create the inverted mask for the mustache
+# Create the mask for the area surrounding our orig_mask
 orig_mask_inv = cv2.bitwise_not(orig_mask)
 
 # Convert mustache image to BGR
-# and save the original image size (used later when re-sizing the image)
+# and save the original image size (us
 imgMustache = imgMustache[:, :, 0:3]
 origMustacheHeight, origMustacheWidth = imgMustache.shape[:2]
-
-# -----------------------------------------------------------------------------
-#       Main program loop
-# -----------------------------------------------------------------------------
 
 # collect video input from first webcam on system
 video_capture = cv2.VideoCapture(0)
@@ -41,7 +31,7 @@ video_capture = cv2.VideoCapture(0)
 soundStarted = False;
 
 while time.clock() < 17:
-    print time.clock()
+	print time.clock()
     
     if soundStarted == False:
     	soundStarted = True
