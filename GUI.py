@@ -1,3 +1,11 @@
+# Project: Live Webcam Video Filters
+# Contributers: Abraham Medina, Gurjot Sandhu, Valentina Fuchs Facht
+# Class: CST 205-02 Spring 2017
+# Date: March 16, 2017
+# Abstract: This program allows the user to activate the webcam of a computer according to a filter they would like put over their face and to be able to then take a photo with the given filter
+# Contribution: Abraham and Valentina worked on getting the primary mustache code working then Valentina split off to do the glasses filter while Abraham continued to refine the primary code. Gurjot worked on the GUI and also worked with Abraham to find most of the resources used in the project. Gurjot also worked on the main implementation of the red nose filter.
+# Github: https://github.com/abrahamleyva/Project3Team248
+
 #!/usr/bin/python2.7
 import sys
 import os
